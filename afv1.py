@@ -8,8 +8,10 @@
 import easygui
 
 def main():
+    """Main functie die structuur in script bewaard"""
     bestand = easygui.fileopenbox(title=None, default="*", filetypes=["*.fna"])
     headers, seqs = lees_inhoud(bestand)
+    totalhitcounter = 0
     zoekwoord = input("Geef een zoekwoord op: ")
     for i in range(len(headers)):
         if zoekwoord in headers[i]:
@@ -18,11 +20,19 @@ def main():
             if check_is_dna:
                 print("Sequentie is DNA")
                 knipt(seqs[i])
+                totalhitcounter += 1
             else:
                 print("Sequentie is geen DNA. Er is iets fout gegaan.")
 
+            if totalhitcounter == 0:
+                print("zoekwoord komt niet voor in headers")
+                main()
+
 
 def lees_inhoud(bestands_naam):
+    """Inlezen van bestand en headers er uit halen.
+    input is string met bestandsnaam
+    """
     bestand = open(bestands_naam)
     headers = []
     seqs = []
@@ -41,18 +51,24 @@ def lees_inhoud(bestands_naam):
 
 
 def is_dna(seq):
-        dna = False
-        a = seq.count("A")
-        t = seq.count("T")
-        c = seq.count("C")
-        g = seq.count("G")
-        total = a+t+c+g
-        if total == len(seq):
-            dna = True
-        return dna
+    """Controleren of input sequentie DNA is door tellen van A, T, G, C en vergelijken met totale lengte sequentie
+    input is sequentie op dezelfde posities in de lijst als het zoekwoord in headers lijst
+    """
+    dna = False
+    a = seq.count("A")
+    t = seq.count("T")
+    c = seq.count("C")
+    g = seq.count("G")
+    total = a+t+c+g
+    if total == len(seq):
+        dna = True
+    return dna
 
 
 def knipt(alpaca_seq):
+    """controleren of de restrictie enzymen knippen in de sequenties behorend tot je zoekwoord
+    input is sequentie uit seq lijst op dezelfde locatie als de bijbehorende match met het zoekwoord in headers lijst
+    """
     bestand = open("enzymen.txt")
     for line in bestand:
         naam, seq=line.split(" ")
