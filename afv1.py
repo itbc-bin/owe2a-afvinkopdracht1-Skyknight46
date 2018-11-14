@@ -52,7 +52,8 @@ def lees_inhoud(bestands_naam):
 
 def is_dna(seq):
     """Controleren of input sequentie DNA is door tellen van A, T, G, C en vergelijken met totale lengte sequentie
-    input is sequentie op dezelfde posities in de lijst als het zoekwoord in headers lijst
+    INPUT: is sequentie op dezelfde posities in de lijst als het zoekwoord in headers lijst
+    OUTPUT: returned boolean True wanneer de aangeleverde sequentie DNA was, False wanneer dit niet het geval was
     """
     dna = False
     a = seq.count("A")
